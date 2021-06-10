@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<!--
+  ~  This file is part of typing/types.
+  ~
+  ~  (c) Victor Passapera <vpassapera@gmail.com>
+  ~
+  ~  For the full copyright and license information, please view the LICENSE
+  ~  file that was distributed with this source code.
+-->
+<ruleset name="Types Standard"
+         xmlns="http://pmd.sf.net/ruleset/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0
+                     http://pmd.sf.net/ruleset_xml_schema.xsd"
+         xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+    <description>
+        Typing/Types coding standards extended.
+    </description>
+    <!-- standard phpmd rules -->
+    <rule ref="rulesets/cleancode.xml">
+        <exclude name="StaticAccess"/>
+    </rule>
+    <rule ref="rulesets/codesize.xml">
+        <exclude name="ExcessiveClassComplexity"/>
+        <exclude name="CyclomaticComplexity"/>
+        <exclude name="NPathComplexity"/>
+        <exclude name="TooManyPublicMethods"/>
+    </rule>
+    <rule ref="rulesets/controversial.xml"/>
+    <rule ref="rulesets/design.xml">
+        <exclude name="CouplingBetweenObjects"/>
+    </rule>
+    <rule ref="rulesets/unusedcode.xml"/>
+    <rule ref="rulesets/naming.xml">
+        <exclude name="ShortVariable"/>
+        <exclude name="LongVariable"/>
+        <exclude name="BooleanGetMethodName"/>
+    </rule>
+    <!-- end standard phpmd rules -->
+
+    <!-- standard rule exceptions -->
+    <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity">
+        <properties>
+            <property name="maximum" value="65"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/NPathComplexity">
+        <properties>
+            <property name="minimum" value="300"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/CyclomaticComplexity">
+        <properties>
+            <property name="reportLevel" value="15"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/TooManyPublicMethods">
+        <properties>
+            <property name="maxmethods" value="20"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/design.xml/CouplingBetweenObjects">
+        <properties>
+            <property name="minimum" value="25"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/ShortVariable">
+        <properties>
+            <property name="minimum" value="2"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/LongVariable">
+        <properties>
+            <property name="maximum" value="25"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/BooleanGetMethodName">
+        <properties>
+            <property name="checkParameterizedMethods" value="true"/>
+        </properties>
+    </rule>
+    <!-- end standard rule exceptions -->
+</ruleset>

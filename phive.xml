@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phive xmlns="https://phar.io/phive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://phar.io/phive">
+  <phar name="phpstan" version="^0.12.88" installed="0.12.88" location="./bin/phpstan" copy="false"/>
+  <phar name="php-cs-fixer" version="^3.0.0" installed="3.0.0" location="./bin/php-cs-fixer" copy="false"/>
+  <phar name="phpcpd" version="^6.0.3" installed="6.0.3" location="./bin/phpcpd" copy="false"/>
+  <!--  <phar name="phpmd" version="^2.9.1" installed="2.10.1" location="./bin/phpmd" copy="false"/>-->
+</phive>

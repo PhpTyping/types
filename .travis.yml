@@ -1,0 +1,31 @@
+language: php
+
+php:
+  - 8.0
+
+branches:
+  only:
+    - master
+    - develop
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
+install:
+  - composer install --no-interaction --prefer-source
+
+before_script:
+  - export PHP_MAJOR_VERSION=$(php -r "echo PHP_MAJOR_VERSION;")
+
+script:
+  - mkdir -p build
+  - bin/grumphp run
+
+after_script:
+  - vendor/bin/coveralls
+
+notifications:
+  irc: "chat.freenode.net#thedevnetwork"
+  email: vpassapera@gmail.com

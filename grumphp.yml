@@ -1,0 +1,55 @@
+grumphp:
+    hooks_preset: local
+    stop_on_failure: false
+    ignore_unstaged_changes: false
+    hide_circumvention_tip: false
+    process_timeout: 60
+    additional_info: ~
+    ascii:
+        failed: etc/gandalf.txt
+        succeeded: vendor/phpro/grumphp/resources/ascii/succeeded.txt
+    parallel:
+        enabled: true
+        max_workers: 32
+    fixer:
+        enabled: true
+        fix_by_default: false
+    environment:
+        paths:
+            - bin
+    tasks:
+        phpcpd: null
+        phpcs:
+            standard: '.phpcs.xml'
+            ignore_patterns:
+                - /^RoboFile\.php$/
+                - /^\.php\-cs\-fixer\.dist\.php$/
+        phpcsfixer:
+            config: '.php-cs-fixer.dist.php'
+        phpmd:
+            ruleset: ['.phpmd.xml']
+            whitelist_patterns:
+                - /src\//
+            exclude:
+                - src/Type/Collection.php
+#                - RoboFile.php
+#                - .php-cs-fixer.dist.php
+        phpmnd:
+            exclude_name:
+                - RoboFile.php
+                - .php-cs-fixer.dist.php
+        phpstan:
+            configuration: 'phpstan.neon.dist'
+            ignore_patterns:
+                - tests
+                - RoboFile.php
+                - .php-cs-fixer.dist.php
+            memory_limit: '512'
+        phpunit:
+            config_file: phpunit.xml.dist
+            always_execute: true
+        shell:
+            scripts:
+                - ['-c', 'bin/roboli test:squash']
+#                - ['-c', 'bin/roboli test:rebase']
+            triggered_by: [php]

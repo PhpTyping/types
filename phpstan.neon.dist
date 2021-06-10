@@ -1,0 +1,24 @@
+parameters:
+    level: max
+    paths:
+        - src
+    ignoreErrors:
+        -
+            message: '~Unsafe usage of new static\(\)\.~'
+            paths:
+                - 'src/Type/Collection.php'
+        -
+            message: '~partition\(\) should be compatible with return type \(array~'
+            paths:
+                - 'src/Type/Collection.php'
+        -
+            message: '~partition\(\) should return iterable\<~'
+            paths:
+                - 'src/Type/Collection.php'
+        -
+            message: '~explode\(\) should return iterable<int, string>&Typing~'
+            path: 'src/Type/StringObject.php'
+        -
+            message: '~MyCLabs\\Enum\\Enum\<mixed\> given\.~'
+            path: 'src'
+    checkGenericClassInNonGenericObjectType: false

@@ -1,0 +1,10 @@
+.idea
+vendor/
+composer.phar
+build/
+bin/
+tools/
+.phpunit.result.cache
+.phpunit.cache
+.php-cs-fixer.cache
+tmp

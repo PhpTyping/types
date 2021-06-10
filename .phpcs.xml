@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<ruleset name="Typing/Types Coding Standards">
+    <description>Coding standard for Typing/Types</description>
+    <file>src</file>
+    <file>tests</file>
+    <arg name="extensions" value="php" />
+    <arg value="sp" />
+    <rule ref="Symfony">
+        <exclude name="Symfony.Functions.Arguments" />
+        <exclude name="Symfony.Commenting.License" />
+        <exclude name="Symfony.Errors.ExceptionMessage.Invalid" />
+        <!--  is not working in php8-->
+        <exclude name="Symfony.Commenting.FunctionComment.Missing" />
+    </rule>
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="120"/>
+        </properties>
+    </rule>
+</ruleset>
