@@ -37,6 +37,7 @@ final class DefaultManager implements ManagerInterface
 
     private function __construct()
     {
+        // Singleton class needs no constructor...
     }
 
     /**

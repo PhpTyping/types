@@ -45,6 +45,20 @@ class IntObjectTest extends TestCase
         $int = false;
     }
 
+    public function testIsEven()
+    {
+        $float = new IntObject(2);
+        $this->assertTrue($float->isEven());
+        $this->assertFalse($float->isOdd());
+    }
+
+    public function testIsOdd()
+    {
+        $float = new IntObject(1);
+        $this->assertTrue($float->isOdd());
+        $this->assertFalse($float->isEven());
+    }
+
     public function testMultiply()
     {
         $this->assertEquals(new IntObject(15), (new IntObject(3))->multipliedBy(new IntObject(5)));

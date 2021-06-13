@@ -1,0 +1,71 @@
+name: "Integration branch continuous patching"
+on:
+  schedule:
+    - cron: '0 */12 * * *'
+  workflow_dispatch: ~
+
+jobs:
+  grump:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        php-versions: ['8.0']
+        composer-versions: ['composer:v2']
+      fail-fast: false
+    name: Running on ${{ matrix.php-versions }} @ ${{ matrix.os }} with ${{ matrix.composer-versions }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          ref: develop
+      - name: Install & Configure PHP
+        uses: shivammathur/setup-php@2.11.0
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: ${{ matrix.composer-versions }}
+          extensions: xdebug, mbstring, posix, gmp, bcmath
+      - name: Check Versions
+        run: |
+          php -v
+          php -m
+          composer --version
+      - name: Get composer cache directory
+        id: composercache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composercache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Update dependencies
+        run: composer update --no-progress --no-suggest --prefer-dist
+      - name: Check if there are changes
+        id: changes
+        uses: UnicornGlobal/has-changes-action@v1.0.11
+      - name: Run Tests
+        if: steps.changes.outputs.changed == 1
+        run: php bin/grumphp run --no-interaction
+      - name: Commit changes if everything is ok.
+        if: ${{ success() }} && steps.changes.outputs.changed == 1
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: PHPTyping
+          author_email: phptyping@noreply.com
+          message: Updating dependencies in ${{ github.run_id }}
+          add: '. --no-verify'
+          push: true
+  make_badge:
+    runs-on: ubuntu-latest
+    if: contains(github.ref, "develop")
+    steps:
+      - name: Generate Build Badge, only on Cont. Build.
+        uses: Schneegans/dynamic-badges-action@v1.0.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: d18a6a553c2308b59df916c29ce64eb6
+          filename: patching.json
+          label: Patching
+          message: passing
+          color: green

@@ -33,6 +33,20 @@ class FloatObjectTest extends TestCase
         $this->assertTrue(($float instanceof FloatObject));
     }
 
+    public function testIsEven()
+    {
+        $float = new FloatObject(2.0);
+        $this->assertTrue($float->isEven());
+        $this->assertFalse($float->isOdd());
+    }
+
+    public function testIsOdd()
+    {
+        $float = new FloatObject(1.0);
+        $this->assertTrue($float->isOdd());
+        $this->assertFalse($float->isEven());
+    }
+
     public function testCanCastToString()
     {
         $float = new FloatObject(1.1);

@@ -28,20 +28,23 @@
     "require": {
         "php": ">=8.0",
         "ext-mbstring": "*",
-        "cocur/slugify": "*@stable",
-        "composer/semver": "*@stable",
-        "doctrine/collections": "*@stable",
-        "doctrine/inflector": "*@stable",
-        "myclabs/php-enum": "*@stable",
-        "nesbot/carbon": "*@stable",
-        "symfony/polyfill-ctype": "*@stable",
-        "symfony/polyfill-mbstring": "*@stable"
+        "cocur/slugify": "^4.0",
+        "composer/semver": "^3.2",
+        "doctrine/collections": "^1.6",
+        "doctrine/inflector": "^2.0",
+        "myclabs/php-enum": "^1.8",
+        "nesbot/carbon": "^2.49",
+        "symfony/polyfill-ctype": "^1.23",
+        "symfony/polyfill-mbstring": "^1.23"
     },
     "require-dev": {
         "ext-bcmath": "*",
         "ext-gmp": "*",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
         "escapestudios/symfony2-coding-standard": "^3.12",
+        "friendsofphp/php-cs-fixer": "^2.19",
+        "phpstan/phpstan": "~0.12",
+        "sebastian/phpcpd": "^6.0",
         "mockery/mockery": "^1.4",
         "pdepend/pdepend": "dev-master as 2.9.2",
         "phpmd/phpmd": "^2.10",
@@ -91,7 +94,7 @@
             },
             "roboli": {
                 "url": "https://robo.li/robo.phar",
-                "only-dev": false,
+                "only-dev": true,
                 "force-replace": true
             }
         }

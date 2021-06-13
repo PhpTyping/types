@@ -57,6 +57,11 @@ use Typing\Model\Language;
 abstract class AbstractStringObject implements Countable, IteratorAggregate, ArrayAccess
 {
     /**
+     * @var string
+     */
+    protected const REGEX_SPACE = '[:space:]';
+
+    /**
      * An instance's string.
      *
      * @var string
@@ -1555,7 +1560,7 @@ abstract class AbstractStringObject implements Countable, IteratorAggregate, Arr
      */
     public function trim(?string $chars = null): static
     {
-        $chars = ($chars) ? preg_quote($chars) : '[:space:]';
+        $chars = ($chars) ? preg_quote($chars) : self::REGEX_SPACE;
 
         return $this->regexReplace("^[$chars]+|[$chars]+\$", '');
     }
@@ -1571,7 +1576,7 @@ abstract class AbstractStringObject implements Countable, IteratorAggregate, Arr
      */
     public function trimLeft(?string $chars = null): static
     {
-        $chars = ($chars) ? preg_quote($chars) : '[:space:]';
+        $chars = ($chars) ? preg_quote($chars) : self::REGEX_SPACE;
 
         return $this->regexReplace("^[$chars]+", '');
     }
@@ -1587,7 +1592,7 @@ abstract class AbstractStringObject implements Countable, IteratorAggregate, Arr
      */
     public function trimRight(?string $chars = null): static
     {
-        $chars = ($chars) ? preg_quote($chars) : '[:space:]';
+        $chars = ($chars) ? preg_quote($chars) : self::REGEX_SPACE;
 
         return $this->regexReplace("[$chars]+\$", '');
     }

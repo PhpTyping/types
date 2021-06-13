@@ -6,10 +6,8 @@ Types
 [![GitHub issues][github issues]][issues page]
 [![Total Downloads][downloads shield]][packagist page]
 [![Latest Stable Version][latest version shield]][packagist page]
-[![Travis][travis build shield]][travis page]
-[![Coverage Status][coveralls badge]][coveralls page]
 
-<img src="https://raw.githubusercontent.com/TheDevNetwork/Aux/master/images/php-types.png" alt="PhpTyping" style="width: 150px;" />
+<img src="https://raw.githubusercontent.com/TheDevNetwork/Aux/master/images/php-types.png" alt="PhpTyping" style="max-width: 150px;" />
 
 ## PHP Primitive wrappers.
 
@@ -77,10 +75,6 @@ This library is released under the MIT license. See the complete license in the 
 [downloads shield]: https://img.shields.io/packagist/dt/typing/types.svg?style=flat-square
 [latest version shield]: https://img.shields.io/packagist/v/typing/types.svg?style=flat-square
 [packagist page]: https://packagist.org/packages/typing/types
-[travis build shield]: https://img.shields.io/travis/PhpTyping/Types.svg?style=flat-square
-[travis page]: https://travis-ci.org/PhpTyping/Types
-[coveralls badge]: https://img.shields.io/coveralls/PhpTyping/Types/develop.svg?style=flat-square
-[coveralls page]: https://coveralls.io/github/PhpTyping/Types?branch=develop
 [PHP bcmath]: https://secure.php.net/manual/en/book.bc.php
 [PHP gmp]: https://secure.php.net/manual/en/book.gmp.php
 [license shield]: https://img.shields.io/github/license/PhpTyping/types?style=flat-square

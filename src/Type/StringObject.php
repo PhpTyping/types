@@ -46,6 +46,11 @@ class StringObject extends AbstractStringObject implements
     use BoolCastableTrait;
 
     /**
+     * @var string
+     */
+    protected const SLUGIFY_REPLACEMENT = '\\2 \\3';
+
+    /**
      * @return string
      */
     public function getScalarValue(): string
@@ -90,8 +95,8 @@ class StringObject extends AbstractStringObject implements
         return new static(
             (new Slugify())->slugify(
                 $this
-                    ->regexReplace('(([A-z])([0-9]))', '\\2 \\3')
-                    ->regexReplace('(([0-9])([A-z]))', '\\2 \\3')
+                    ->regexReplace('(([A-z])([0-9]))', self::SLUGIFY_REPLACEMENT)
+                    ->regexReplace('(([0-9])([A-z]))', self::SLUGIFY_REPLACEMENT)
                     ->replace('@', '-at-')
                     ->getScalarValue(),
                 $replacement
@@ -183,8 +188,8 @@ class StringObject extends AbstractStringObject implements
     {
         $result = $this->getInflector()->camelize(
             $this
-                ->regexReplace('(([A-z])([0-9]))', '\\2 \\3')
-                ->regexReplace('(([0-9])([A-z]))', '\\2 \\3')
+                ->regexReplace('(([A-z])([0-9]))', self::SLUGIFY_REPLACEMENT)
+                ->regexReplace('(([0-9])([A-z]))', self::SLUGIFY_REPLACEMENT)
                 ->underscored()
                 ->getScalarValue()
         );
@@ -345,6 +350,8 @@ class StringObject extends AbstractStringObject implements
                 return $this->chars();
             case (string) Primitive::BOOL():
                 return BooleanObject::fromPrimitive($this->getScalarValue())->getScalarValue();
+            default:
+                // Throws exception below.
         }
 
         throw new InvalidTypeCastException($this, $primitive);

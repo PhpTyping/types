@@ -22,7 +22,6 @@ use Exception;
 use function is_array;
 use function is_numeric;
 use function is_string;
-use JetBrains\PhpStorm\ArrayShape;
 use function key;
 use LogicException;
 use function next;
@@ -65,7 +64,6 @@ class CollectionTest extends TestCase
         self::assertEquals(null, $this->collection->remove('testing_does_not_exist'));
     }
 
-    /** @noinspection PhpUnusedParameterInspection */
     public function testExists(): void
     {
         $this->collection->add('one');
@@ -80,13 +78,13 @@ class CollectionTest extends TestCase
         self::assertFalse($exists);
 
         $elements = [1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'zero' => 0];
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
-        self::assertTrue($collection->exists(static function ($key, $element) {
+        self::assertTrue($localCollection->exists(static function ($key, $element) {
             return 'A' === $key && 'a' === $element;
         }), 'Element exists');
 
-        self::assertFalse($collection->exists(static function ($key, $element) {
+        self::assertFalse($localCollection->exists(static function ($key, $element) {
             return 'non-existent' === $key && 'non-existent' === $element;
         }), 'Element not exists');
     }
@@ -315,9 +313,9 @@ class CollectionTest extends TestCase
      */
     public function testToArray(array $elements): void
     {
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
-        self::assertSame($elements, $collection->toArray());
+        self::assertSame($elements, $localCollection->toArray());
     }
 
     /**
@@ -327,8 +325,8 @@ class CollectionTest extends TestCase
      */
     public function testFirst(array $elements): void
     {
-        $collection = $this->buildCollection($elements);
-        self::assertSame(reset($elements), $collection->first());
+        $localCollection = $this->buildCollection($elements);
+        self::assertSame(reset($elements), $localCollection->first());
     }
 
     /**
@@ -338,8 +336,8 @@ class CollectionTest extends TestCase
      */
     public function testLast(array $elements): void
     {
-        $collection = $this->buildCollection($elements);
-        self::assertSame(end($elements), $collection->last());
+        $localCollection = $this->buildCollection($elements);
+        self::assertSame(end($elements), $localCollection->last());
     }
 
     /**
@@ -349,14 +347,14 @@ class CollectionTest extends TestCase
      */
     public function testKey(array $elements): void
     {
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
-        self::assertSame(key($elements), $collection->key());
+        self::assertSame(key($elements), $localCollection->key());
 
         next($elements);
-        $collection->next();
+        $localCollection->next();
 
-        self::assertSame(key($elements), $collection->key());
+        self::assertSame(key($elements), $localCollection->key());
     }
 
     /**
@@ -366,23 +364,23 @@ class CollectionTest extends TestCase
      */
     public function testNext(array $elements): void
     {
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
         while (true) {
-            $collectionNext = $collection->next();
+            $localCollectionNext = $localCollection->next();
             $arrayNext = next($elements);
 
-            if (!$collectionNext || !$arrayNext) {
+            if (!$localCollectionNext || !$arrayNext) {
                 break;
             }
 
             self::assertSame(
                 $arrayNext,
-                $collectionNext,
+                $localCollectionNext,
                 'Returned value of ArrayCollection::next() and next() not match'
             );
-            self::assertSame(key($elements), $collection->key(), 'Keys not match');
-            self::assertSame(current($elements), $collection->current(), 'Current values not match');
+            self::assertSame(key($elements), $localCollection->key(), 'Keys not match');
+            self::assertSame(current($elements), $localCollection->current(), 'Current values not match');
         }
     }
 
@@ -393,14 +391,14 @@ class CollectionTest extends TestCase
      */
     public function testCurrent(array $elements): void
     {
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
-        self::assertSame(current($elements), $collection->current());
+        self::assertSame(current($elements), $localCollection->current());
 
         next($elements);
-        $collection->next();
+        $localCollection->next();
 
-        self::assertSame(current($elements), $collection->current());
+        self::assertSame(current($elements), $localCollection->current());
     }
 
     /**
@@ -410,9 +408,9 @@ class CollectionTest extends TestCase
      */
     public function testGetKeysSameAsInternal(array $elements): void
     {
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
-        self::assertSame(array_keys($elements), $collection->getKeys());
+        self::assertSame(array_keys($elements), $localCollection->getKeys());
     }
 
     /**
@@ -422,9 +420,9 @@ class CollectionTest extends TestCase
      */
     public function testGetValuesSameAsInternal(array $elements): void
     {
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
-        self::assertSame(array_values($elements), $collection->getValues());
+        self::assertSame(array_values($elements), $localCollection->getValues());
     }
 
     /**
@@ -434,9 +432,9 @@ class CollectionTest extends TestCase
      */
     public function testCountSameAsInternal(array $elements): void
     {
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
-        self::assertSame(count($elements), $collection->count());
+        self::assertSame(count($elements), $localCollection->count());
     }
 
     /**
@@ -448,20 +446,21 @@ class CollectionTest extends TestCase
      */
     public function testIterator(array $elements): void
     {
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
         $iterations = 0;
-        foreach ($collection->getIterator() as $key => $item) {
+        foreach ($localCollection->getIterator() as $key => $item) {
             self::assertSame($elements[$key], $item, 'Item '.$key.' not match');
             ++$iterations;
         }
 
-        self::assertEquals(count($elements), $iterations, 'Number of iterations not match');
+        self::assertEquals($iterations, count($elements), 'Number of iterations not match');
     }
 
     /**
      * @psalm-return array<string, array{mixed[]}>
+     *
+     * @return array
      */
-    #[ArrayShape(['indexed' => "\int[][]", 'associative' => "\string[][]", 'mixed' => 'array[]'])]
     public function provideDifferentElements(): array
     {
         return [
@@ -474,73 +473,73 @@ class CollectionTest extends TestCase
     public function testRemoveWithUnset(): void
     {
         $elements = [1, 'A' => 'a', 2, 'B' => 'b', 3];
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
-        self::assertEquals(1, $collection->remove(0));
+        self::assertEquals(1, $localCollection->remove(0));
         unset($elements[0]);
 
-        self::assertEquals(null, $collection->remove('non-existent'));
+        self::assertEquals(null, $localCollection->remove('non-existent'));
         unset($elements['non-existent']);
 
-        self::assertEquals(2, $collection->remove(1));
+        self::assertEquals(2, $localCollection->remove(1));
         unset($elements[1]);
 
-        self::assertEquals('a', $collection->remove('A'));
+        self::assertEquals('a', $localCollection->remove('A'));
         unset($elements['A']);
 
-        self::assertEquals($elements, $collection->toArray());
+        self::assertEquals($elements, $localCollection->toArray());
     }
 
     public function testRemoveElementWithUnset(): void
     {
         $elements = [1, 'A' => 'a', 2, 'B' => 'b', 3, 'A2' => 'a', 'B2' => 'b'];
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
-        self::assertTrue($collection->removeElement(1));
+        self::assertTrue($localCollection->removeElement(1));
         unset($elements[0]);
 
-        self::assertFalse($collection->removeElement('non-existent'));
+        self::assertFalse($localCollection->removeElement('non-existent'));
 
-        self::assertTrue($collection->removeElement('a'));
+        self::assertTrue($localCollection->removeElement('a'));
         unset($elements['A']);
 
-        self::assertTrue($collection->removeElement('a'));
+        self::assertTrue($localCollection->removeElement('a'));
         unset($elements['A2']);
 
-        self::assertEquals($elements, $collection->toArray());
+        self::assertEquals($elements, $localCollection->toArray());
     }
 
     public function testContainsKey(): void
     {
         $elements = [1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'B2' => 'b'];
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
-        self::assertTrue($collection->containsKey(0), 'Contains index 0');
-        self::assertTrue($collection->containsKey('A'), 'Contains key "A"');
-        self::assertTrue($collection->containsKey('null'), 'Contains key "null", with value null');
-        self::assertFalse($collection->containsKey('non-existent'), "Doesn't contain key");
+        self::assertTrue($localCollection->containsKey(0), 'Contains index 0');
+        self::assertTrue($localCollection->containsKey('A'), 'Contains key "A"');
+        self::assertTrue($localCollection->containsKey('null'), 'Contains key "null", with value null');
+        self::assertFalse($localCollection->containsKey('non-existent'), "Doesn't contain key");
         $this->collection[5] = 'five';
         self::assertTrue($this->collection->containsKey(5));
     }
 
     public function testEmpty(): void
     {
-        $collection = $this->buildCollection();
-        self::assertTrue($collection->isEmpty(), 'Empty collection');
+        $localCollection = $this->buildCollection();
+        self::assertTrue($localCollection->isEmpty(), 'Empty collection');
 
-        $collection->add(1);
-        self::assertFalse($collection->isEmpty(), 'Not empty collection');
+        $localCollection->add(1);
+        self::assertFalse($localCollection->isEmpty(), 'Not empty collection');
     }
 
     public function testContains(): void
     {
         $elements = [1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'zero' => 0];
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
-        self::assertTrue($collection->contains(0), 'Contains Zero');
-        self::assertTrue($collection->contains('a'), 'Contains "a"');
-        self::assertTrue($collection->contains(null), 'Contains Null');
-        self::assertFalse($collection->contains('non-existent'), "Doesn't contain an element");
+        self::assertTrue($localCollection->contains(0), 'Contains Zero');
+        self::assertTrue($localCollection->contains('a'), 'Contains "a"');
+        self::assertTrue($localCollection->contains(null), 'Contains Null');
+        self::assertFalse($localCollection->contains('non-existent'), "Doesn't contain an element");
 
         $this->collection[0] = 'test';
         self::assertTrue($this->collection->contains('test'));
@@ -549,21 +548,21 @@ class CollectionTest extends TestCase
     public function testIndexOf(): void
     {
         $elements = [1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'zero' => 0];
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
         self::assertSame(
             array_search(2, $elements, true),
-            $collection->indexOf(2),
+            $localCollection->indexOf(2),
             'Index of 2'
         );
         self::assertSame(
             array_search(null, $elements, true),
-            $collection->indexOf(null),
+            $localCollection->indexOf(null),
             'Index of null'
         );
         self::assertSame(
             array_search('non-existent', $elements, true),
-            $collection->indexOf('non-existent'),
+            $localCollection->indexOf('non-existent'),
             'Index of non existent'
         );
     }
@@ -571,11 +570,11 @@ class CollectionTest extends TestCase
     public function testGet(): void
     {
         $elements = [1, 'A' => 'a', 2, 'null' => null, 3, 'A2' => 'a', 'zero' => 0];
-        $collection = $this->buildCollection($elements);
+        $localCollection = $this->buildCollection($elements);
 
-        self::assertSame(2, $collection->get(1), 'Get element by index');
-        self::assertSame('a', $collection->get('A'), 'Get element by name');
-        self::assertSame(null, $collection->get('non-existent'), 'Get non existent element');
+        self::assertSame(2, $localCollection->get(1), 'Get element by index');
+        self::assertSame('a', $localCollection->get('A'), 'Get element by name');
+        self::assertSame(null, $localCollection->get('non-existent'), 'Get non existent element');
 
         $this->collection[0] = 'test';
         self::assertEquals('test', $this->collection->get(0));
@@ -589,12 +588,12 @@ class CollectionTest extends TestCase
         $object1->sortField = 2;
         $object2->sortField = 1;
 
-        $collection = $this->buildCollection([
+        $localCollection = $this->buildCollection([
             'object1' => $object1,
             'object2' => $object2,
         ]);
 
-        if (!$this->isSelectable($collection)) {
+        if (!$this->isSelectable($localCollection)) {
             $this->markTestSkipped('Collection does not support Selectable interface');
         }
 
@@ -603,7 +602,7 @@ class CollectionTest extends TestCase
                 'object2' => $object2,
                 'object1' => $object1,
             ],
-            $collection
+            $localCollection
                 ->matching(new Criteria(null, ['sortField' => Criteria::ASC]))
                 ->toArray()
         );
@@ -611,7 +610,7 @@ class CollectionTest extends TestCase
 
     public function testMultiColumnSortAppliesAllSorts(): void
     {
-        $collection = $this->buildCollection([
+        $localCollection = $this->buildCollection([
             ['foo' => 1, 'bar' => 2],
             ['foo' => 2, 'bar' => 4],
             ['foo' => 2, 'bar' => 3],
@@ -623,13 +622,13 @@ class CollectionTest extends TestCase
             0 => ['foo' => 1, 'bar' => 2],
         ];
 
-        if (!$this->isSelectable($collection)) {
+        if (!$this->isSelectable($localCollection)) {
             $this->markTestSkipped('Collection does not support Selectable interface');
         }
 
         self::assertSame(
             $expected,
-            $collection
+            $localCollection
                 ->matching(new Criteria(null, ['foo' => Criteria::DESC, 'bar' => Criteria::DESC]))
                 ->toArray()
         );
@@ -637,8 +636,8 @@ class CollectionTest extends TestCase
 
     public function testImplode()
     {
-        $collection = new Collection(['foo', 'bar', 'baz']);
-        $this->assertEquals(StringObject::create('foo, bar, baz'), $collection->implode(', '));
+        $localCollection = new Collection(['foo', 'bar', 'baz']);
+        $this->assertEquals(StringObject::create('foo, bar, baz'), $localCollection->implode(', '));
     }
 
     public function testTypedCollectionFailsOnInvalidType()
@@ -655,43 +654,43 @@ class CollectionTest extends TestCase
 
     public function testCastsToCompatibleTypeWhenPossible()
     {
-        $collection = $this->buildCollection([1, 2], IntObject::class);
-        $this->assertEquals([new IntObject(1), new IntObject(2)], $collection->toArray());
-        $collection = $this->buildCollection([1, 2, '3'], Primitive::INT());
-        $this->assertEquals([1, 2, 3], $collection->toArray());
-        $collection = $this->buildCollection([1.2, 2.1, '4.5'], Primitive::FLOAT());
-        $this->assertEquals([1.2, 2.1, 4.5], $collection->toArray());
-        $this->assertEquals((string) Primitive::FLOAT(), $collection->getType());
+        $localCollection = $this->buildCollection([1, 2], IntObject::class);
+        $this->assertEquals([new IntObject(1), new IntObject(2)], $localCollection->toArray());
+        $localCollection = $this->buildCollection([1, 2, '3'], Primitive::INT());
+        $this->assertEquals([1, 2, 3], $localCollection->toArray());
+        $localCollection = $this->buildCollection([1.2, 2.1, '4.5'], Primitive::FLOAT());
+        $this->assertEquals([1.2, 2.1, 4.5], $localCollection->toArray());
+        $this->assertEquals((string) Primitive::FLOAT(), $localCollection->getType());
     }
 
     public function testCastStringFailsWhenInvalid()
     {
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage('Object of class stdClass could not be converted to string');
-        $collection = $this->buildCollection([tmpfile(), new stdClass()]);
-        $collection->toString();
+        $localCollection = $this->buildCollection([tmpfile(), new stdClass()]);
+        $localCollection->toString();
     }
 
     public function testMerge()
     {
-        $collection = $this->buildCollection(['foo']);
+        $localCollection = $this->buildCollection(['foo']);
         $expected = $this->buildCollection(['foo', 'bar']);
-        $this->assertEquals($expected->toArray(), $collection->merge($expected)->toArray());
+        $this->assertEquals($expected->toArray(), $localCollection->merge($expected)->toArray());
 
-        $collection = $this->buildCollection(['foo'], StringObject::class);
+        $localCollection = $this->buildCollection(['foo'], StringObject::class);
         $expected = $this->buildCollection([new StringObject('foo'), 'bar', 'bar'], StringObject::class);
         $this->assertEquals(
             $expected,
-            $collection->merge($this->buildCollection(['bar', 'bar'], StringObject::class), true)
+            $localCollection->merge($this->buildCollection(['bar', 'bar'], StringObject::class), true)
         );
     }
 
     public function testMergeWithDupes()
     {
-        $collection = $this->buildCollection(['foo']);
+        $localCollection = $this->buildCollection(['foo']);
         $this->assertEquals(
             $this->buildCollection(['foo', 'foo', 'bar']),
-            $collection->merge(new Collection(['foo', 'bar']), true)
+            $localCollection->merge(new Collection(['foo', 'bar']), true)
         );
     }
 
@@ -723,44 +722,44 @@ class CollectionTest extends TestCase
 
     public function testBoxable()
     {
-        $collection = new Collection(['foo', 'bar'], 'string');
-        Collection::box($collection);
-        $this->assertEquals('foo, bar', $collection->toString());
-        /** @var Collection $collection */
-        $collection = ['baz', 'qux'];
-        $this->assertEquals('baz, qux', $collection->toString());
-        $this->assertEquals(['baz', 'qux'], $collection->toArray());
-        $collection = ['foo', 'bar', 'baz', 'qux'];
-        $this->assertEquals(4, $collection->toInt()); //"Cast" to int returns count
-        $collection = false;
-        $this->assertEquals([false], $collection->toArray());
+        $localCollection = new Collection(['foo', 'bar'], 'string');
+        Collection::box($localCollection);
+        $this->assertEquals('foo, bar', $localCollection->toString());
+        /** @var Collection $localCollection */
+        $localCollection = ['baz', 'qux'];
+        $this->assertEquals('baz, qux', $localCollection->toString());
+        $this->assertEquals(['baz', 'qux'], $localCollection->toArray());
+        $localCollection = ['foo', 'bar', 'baz', 'qux'];
+        $this->assertEquals(4, $localCollection->toInt()); //"Cast" to int returns count
+        $localCollection = false;
+        $this->assertEquals([false], $localCollection->toArray());
     }
 
     public function testIsAssociative()
     {
-        $collection = new Collection(['foo' => 'bar']);
-        $this->assertTrue($collection->isAssociative());
-        $collection = new Collection([]);
-        $this->assertFalse($collection->isAssociative());
+        $localCollection = new Collection(['foo' => 'bar']);
+        $this->assertTrue($localCollection->isAssociative());
+        $localCollection = new Collection([]);
+        $this->assertFalse($localCollection->isAssociative());
     }
 
     public function testUnique()
     {
-        $collection = new Collection(['foo', 'foo', 'bar']);
-        $this->assertEquals((new Collection(['foo', 'bar']))->toArray(), $collection->unique()->toArray());
-        $collection = new Collection(['ber' => 'foo', 'qux' => 'foo', 'bar' => 'baaz']);
+        $localCollection = new Collection(['foo', 'foo', 'bar']);
+        $this->assertEquals((new Collection(['foo', 'bar']))->toArray(), $localCollection->unique()->toArray());
+        $localCollection = new Collection(['ber' => 'foo', 'qux' => 'foo', 'bar' => 'baaz']);
         $this->assertEquals(
             (new Collection(['ber' => 'foo', 'bar' => 'baaz']))->toArray(),
-            $collection->unique()->toArray()
+            $localCollection->unique()->toArray()
         )
         ;
     }
 
     public function testUniqueFailsWhenCannotBeUnique()
     {
-        $collection = new Collection([false, false, true]);
+        $localCollection = new Collection([false, false, true]);
         $this->expectException(LogicException::class);
-        $collection->unique();
+        $localCollection->unique();
     }
 
     public function testGuessType()
@@ -776,17 +775,17 @@ class CollectionTest extends TestCase
 
     public function testUnshift()
     {
-        $collection = new Collection(['two', 'three']);
-        $this->assertTrue($collection->unshift('one'));
-        $this->assertEquals(['one', 'two', 'three'], $collection->toArray());
+        $localCollection = new Collection(['two', 'three']);
+        $this->assertTrue($localCollection->unshift('one'));
+        $this->assertEquals(['one', 'two', 'three'], $localCollection->toArray());
     }
 
     public function testConvertsTypes()
     {
-        $collection = new Collection([123, 223, 311], 'string');
-        $this->assertEquals(['123', '223', '311'], $collection->toArray());
-        $collection = new Collection(['yes', '1', 'true', 'no'], (string) Primitive::BOOL());
-        $this->assertEquals([true, true, true, false], $collection->toArray());
+        $localCollection = new Collection([123, 223, 311], 'string');
+        $this->assertEquals(['123', '223', '311'], $localCollection->toArray());
+        $localCollection = new Collection(['yes', '1', 'true', 'no'], (string) Primitive::BOOL());
+        $this->assertEquals([true, true, true, false], $localCollection->toArray());
     }
 
     public function testFailsConvertUnmappedBool()
@@ -797,11 +796,11 @@ class CollectionTest extends TestCase
 
     public function testHasType()
     {
-        $collection = new Collection([1, false, 'string', new stdClass()]);
-        $this->assertTrue($collection->hasType(stdClass::class));
-        $this->assertTrue($collection->hasType((string) Primitive::INT()));
-        $this->assertTrue($collection->hasType((string) Primitive::BOOL()));
-        $this->assertTrue($collection->hasType((string) Primitive::STRING()));
+        $localCollection = new Collection([1, false, 'string', new stdClass()]);
+        $this->assertTrue($localCollection->hasType(stdClass::class));
+        $this->assertTrue($localCollection->hasType((string) Primitive::INT()));
+        $this->assertTrue($localCollection->hasType((string) Primitive::BOOL()));
+        $this->assertTrue($localCollection->hasType((string) Primitive::STRING()));
     }
 
     protected function fillMatchingFixture(): void

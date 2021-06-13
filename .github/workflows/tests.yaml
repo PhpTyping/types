@@ -1,0 +1,67 @@
+name: "Runs tests & checks"
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    env:
+      XDEBUG_MODE: coverage
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+        php-versions: ['8.0']
+        composer-versions: ['composer:v2']
+      fail-fast: false
+    name: Running on ${{ matrix.php-versions }} @ ${{ matrix.os }} with ${{ matrix.composer-versions }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install & Configure PHP
+        uses: shivammathur/setup-php@2.11.0
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: ${{ matrix.composer-versions }}
+          extensions: xdebug, mbstring, posix, gmp, bcmath
+      - name: Check Versions
+        run: |
+          php -v
+          php -m
+          composer --version
+      - name: Get composer cache directory
+        id: composercache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composercache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Install dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist
+      - name: Run Tests
+        run: php bin/grumphp run --no-interaction
+      - name: Starting SonarCloud Scan
+        if: contains(matrix.os, 'ubuntu-latest')
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=phptyping
+            -Dsonar.projectKey=PhpTyping-types
+            -Dsonar.projectName=Types
+            -Dsonar.projectVersion=${{github.ref}}
+            -Dsonar.sources=src
+            -Dsonar.tests=tests
+            -Dsonar.language=php
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.exclusions=RoboFile.php,.php-cs-fixer.dist.php,src/Type/Collection.php
+            -Dsonar.php.tests.reportPath=build/phpunit/logs/junit.xml
+            -Dsonar.php.coverage.reportPath=build/phpunit/logs/clover.xml
+            -Dsonar.cpd.exclusions=test

@@ -578,7 +578,7 @@ class Collection implements Selectable, TypedCollectionInterface, PrimitiveLoade
             return $this->type;
         }
 
-        return $this->guessType();
+        return null;
     }
 
     /**
@@ -586,7 +586,7 @@ class Collection implements Selectable, TypedCollectionInterface, PrimitiveLoade
      */
     public function isTyped(): bool
     {
-        return !empty($this->type);
+        return !empty($this->type) || null !== $this->guessType();
     }
 
     /**
@@ -600,7 +600,7 @@ class Collection implements Selectable, TypedCollectionInterface, PrimitiveLoade
             return $this->type === $type;
         }
 
-        return $this->getType() === $type;
+        return false;
     }
 
     /**
@@ -798,7 +798,7 @@ class Collection implements Selectable, TypedCollectionInterface, PrimitiveLoade
      */
     private function guessType(): ?string
     {
-        if ($this->isTyped()) {
+        if (null !== $this->type) {
             return $this->type;
         }
 
