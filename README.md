@@ -7,7 +7,7 @@ Types
 [![Total Downloads][downloads shield]][packagist page]
 [![Latest Stable Version][latest version shield]][packagist page]
 
-<img src="https://raw.githubusercontent.com/TheDevNetwork/Aux/master/images/php-types.png" alt="PhpTyping" style="max-width: 150px;" />
+<img src="https://raw.githubusercontent.com/TheDevNetwork/Aux/master/images/php-types.png" alt="PhpTyping" width="150px"/>
 
 ## PHP Primitive wrappers.
 
