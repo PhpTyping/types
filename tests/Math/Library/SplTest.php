@@ -82,7 +82,7 @@ class SplTest extends AbstractPrecisionMathLibraryTest
 
     public function testBadGamma()
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(InvalidNumberException::class);
         $this->expectExceptionMessage('Number too large');
         $this->mathLibrary->gamma('172');
     }

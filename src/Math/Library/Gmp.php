@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Typing\Math\Library;
 
-use RuntimeException;
 use Throwable;
+use Typing\Exception\InvalidLibraryException;
 
 /**
  * Class Gmp.
@@ -71,7 +71,7 @@ class Gmp implements MathLibraryInterface
      * @param string $rightOperand
      * @param int    $precision
      *
-     * @throws RuntimeException when a non-int is passed
+     * @throws InvalidLibraryException when a non-int is passed
      *
      * @return string
      */
@@ -80,7 +80,7 @@ class Gmp implements MathLibraryInterface
         try {
             return gmp_strval(gmp_div_q($leftOperand, $rightOperand));
         } catch (Throwable) {
-            throw new RuntimeException('GMP can only divide integers.');
+            throw new InvalidLibraryException('GMP can only divide integers.');
         }
     }
 
@@ -285,10 +285,10 @@ class Gmp implements MathLibraryInterface
     /**
      * @param string $methodName
      *
-     * @return RuntimeException
+     * @return InvalidLibraryException
      */
-    private function createInvalidLibraryException(string $methodName): RuntimeException
+    private function createInvalidLibraryException(string $methodName): InvalidLibraryException
     {
-        return new RuntimeException("Not a valid library for {$methodName}");
+        return new InvalidLibraryException("Not a valid library for {$methodName}");
     }
 }

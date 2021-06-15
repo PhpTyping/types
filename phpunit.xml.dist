@@ -38,6 +38,7 @@
         </exclude>
         <report>
             <clover outputFile="build/phpunit/logs/clover.xml"/>
+            <xml outputDirectory="build/phpunit/logs/phpunit.xml" />
             <html outputDirectory="build/phpunit/report" lowUpperBound="55" />
             <text outputFile="php://stdout" showOnlySummary="true" />
         </report>
