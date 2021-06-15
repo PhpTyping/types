@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Typing\Math\Library;
 
-use RuntimeException;
+use Typing\Exception\InvalidLibraryException;
 use Typing\Type\StringObject;
 
 /**
@@ -109,7 +109,7 @@ class BcMath implements MathLibraryInterface
     public function compare(string $leftOperand, string $rightOperand, int $precision = 0): string
     {
         if ($this->isVersionComparison($leftOperand, $rightOperand)) {
-            throw new RuntimeException('BcMath cannot do version compare.');
+            throw new InvalidLibraryException('BcMath cannot do version compare.');
         }
 
         return strval(bccomp($leftOperand, $rightOperand, $precision));
@@ -127,7 +127,7 @@ class BcMath implements MathLibraryInterface
     public function modulo(string $operand, string $dividedBy, int $precision = 0): string
     {
         if ($precision > 0) {
-            throw new RuntimeException('Precision is not supported. Use Spl::modulo, it uses fmod.');
+            throw new InvalidLibraryException('Precision is not supported. Use Spl::modulo, it uses fmod.');
         }
 
         return bcmod($operand, $dividedBy) ?? '';
@@ -322,10 +322,10 @@ class BcMath implements MathLibraryInterface
     /**
      * @param string $methodName
      *
-     * @return RuntimeException
+     * @return InvalidLibraryException
      */
-    private function createInvalidLibraryException(string $methodName): RuntimeException
+    private function createInvalidLibraryException(string $methodName): InvalidLibraryException
     {
-        return new RuntimeException("Not a valid library for {$methodName}");
+        return new InvalidLibraryException("Not a valid library for {$methodName}");
     }
 }

@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Typing\Math\Library;
 
-use RuntimeException;
+use Typing\Exception\InvalidLibraryException;
 use Typing\Exception\InvalidNumberException;
 use Typing\Math\DefaultMathAdapter;
 use Typing\Type\StringObject;
@@ -260,7 +260,7 @@ class Spl implements MathLibraryInterface
      * @param string $operand
      * @param int    $nth
      *
-     * @throws RuntimeException
+     * @throws InvalidLibraryException
      *
      * @return string
      *
@@ -268,8 +268,7 @@ class Spl implements MathLibraryInterface
      */
     public function root(string $operand, int $nth): string
     {
-        //Implement something later.
-        throw new RuntimeException('Not a valid library for root^n.');
+        throw new InvalidLibraryException('Not a valid library for root^n.');
     }
 
     /**
@@ -369,7 +368,7 @@ class Spl implements MathLibraryInterface
         }
 
         if ($operand > self::GAMMA_MAX) {
-            throw new RuntimeException('Number too large.');
+            throw new InvalidNumberException('Number too large.');
         }
 
         return (string) exp(floatval($this->logGamma((string) $operand)));
