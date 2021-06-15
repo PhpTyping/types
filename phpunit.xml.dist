@@ -37,8 +37,8 @@
             <file>RoboFile.php</file>
         </exclude>
         <report>
-            <clover outputFile="build/logs/clover.xml"/>
-            <html outputDirectory="build/report" lowUpperBound="55" />
+            <clover outputFile="build/phpunit/logs/clover.xml"/>
+            <html outputDirectory="build/phpunit/report" lowUpperBound="55" />
             <text outputFile="php://stdout" showOnlySummary="true" />
         </report>
     </coverage>

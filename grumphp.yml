@@ -18,26 +18,29 @@ grumphp:
         paths:
             - bin
     tasks:
-        phpcpd: null
+        phpcpd:
+            triggered_by: [php]
         phpcs:
             standard: '.phpcs.xml'
             ignore_patterns:
                 - /^RoboFile\.php$/
                 - /^\.php\-cs\-fixer\.dist\.php$/
+            triggered_by: [php]
         phpcsfixer:
             config: '.php-cs-fixer.dist.php'
+            triggered_by: [php]
         phpmd:
             ruleset: ['.phpmd.xml']
             whitelist_patterns:
                 - /src\//
             exclude:
                 - src/Type/Collection.php
-#                - RoboFile.php
-#                - .php-cs-fixer.dist.php
+            triggered_by: [php]
         phpmnd:
             exclude_name:
                 - RoboFile.php
                 - .php-cs-fixer.dist.php
+            triggered_by: [php]
         phpstan:
             configuration: 'phpstan.neon.dist'
             ignore_patterns:
@@ -45,11 +48,7 @@ grumphp:
                 - RoboFile.php
                 - .php-cs-fixer.dist.php
             memory_limit: '512'
+            triggered_by: [php]
         phpunit:
             config_file: phpunit.xml.dist
             always_execute: true
-        shell:
-            scripts:
-                - ['-c', 'bin/roboli test:squash']
-#                - ['-c', 'bin/roboli test:rebase']
-            triggered_by: [php]

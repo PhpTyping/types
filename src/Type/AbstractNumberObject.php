@@ -251,6 +251,22 @@ abstract class AbstractNumberObject implements NumberObjectInterface, BoxableInt
     }
 
     /**
+     * @return bool
+     */
+    public function isEven(): bool
+    {
+        return 0 === intval($this->modulo(2)->getScalarValue());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOdd(): bool
+    {
+        return 0 !== intval($this->modulo(2)->getScalarValue());
+    }
+
+    /**
      * Gets the current precision (Should be 0 for IntType).
      *
      * @return int

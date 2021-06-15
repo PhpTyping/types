@@ -16,11 +16,10 @@ use Symfony\Component\Process\Exception\ProcessTimedOutException;
 class RoboFile extends Tasks
 {
     /**
-     * Builds project. (Runs fix:cs, test:run, build:documentation)
+     * Builds project.
      */
     public function build()
     {
-        $this->buildDocumentation();
     }
 
     public function testDev()
@@ -31,7 +30,6 @@ class RoboFile extends Tasks
         $this->testMagicNumber();
         $this->testMessDetector();
         $this->testStan();
-        $this->build();
     }
 
     /**
@@ -257,46 +255,6 @@ class RoboFile extends Tasks
         }
 
         $this->say('[PASS] No rebase required.');
-    }
-
-    /**
-     * Builds Project documentation using MKDocs.
-     */
-    public function buildDocumentation()
-    {
-        $this->_remove('build/docs');
-        $this->taskExec('python -W ignore $(which mkdocs) build --clean')->run();
-    }
-
-    /**
-     * Publishes documentation to github pages.
-     *
-     * @param string $message
-     */
-    public function publishDocumentation($message = 'Update from RoboFile.')
-    {
-        $this->say('If using a VM make sure you are forwarding the ssh agent for git!');
-
-        $setUpDir = function($target, $branch) {
-            return "git clone $(git remote get-url origin) {$target} && cd {$target} && git checkout {$branch}";
-        };
-
-        $doPublish = function($target, $branch) use ($message) {
-            return "cd {$target} && if [ $(git diff --name-only | wc -l) -gt 0 ]; " .
-                "then git add -u . && git add . && git commit -m '{$message}' && git push origin {$branch}; fi";
-        };
-
-        $toDir = 'publish';
-        $this->taskExec($setUpDir($toDir, 'gh-pages'))->run(); //clone + checkout proper branch
-        $this->taskExec(sprintf('rm -rf %s/*', $toDir))->run(); //clean
-        $this->_mkdir($toDir . '/api'); //Remake API dir
-        $this->taskParallelExec()
-            ->process(sprintf('cp -r build/doc/* %s', $toDir)) //Copy build doc files
-            ->process(sprintf('cp -r build/api/* %s', $toDir . '/api/')) //Copy build API files
-            ->run()
-        ;
-        $this->taskExec($doPublish($toDir, 'gh-pages'))->run()->stopOnFail();
-        $this->_remove($toDir);
     }
 
     /**

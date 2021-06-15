@@ -269,6 +269,23 @@ abstract class AbstractMathAdapter implements MathAdapterInterface
             return $library->$operation($leftOperand, $precision);
         }
 
+        return $this->getNonPrecisionResult($library, $operation, $leftOperand, $rightOperand);
+    }
+
+    /**
+     * @param MathLibraryInterface $library
+     * @param string               $operation
+     * @param string               $leftOperand
+     * @param string|null          $rightOperand
+     *
+     * @return mixed
+     */
+    private function getNonPrecisionResult(
+        MathLibraryInterface $library,
+        string $operation,
+        string $leftOperand,
+        string $rightOperand = null
+    ): mixed {
         if (null !== $rightOperand) {
             return $library->$operation($leftOperand, $rightOperand);
         }
