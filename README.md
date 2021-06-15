@@ -42,7 +42,7 @@ Documentation
 -------------
 ##### Full docs
 
-[Please see the online documentation](https://php-types.readthedocs.io/en/latest/?)
+[Please see the online documentation][documentation link]
 
 ##### Requirements
 
@@ -92,7 +92,7 @@ This library is released under the MIT license. See the complete license in the 
 [license shield]: https://img.shields.io/github/license/PhpTyping/types?style=flat-square
 [packagist page]: https://packagist.org/packages/typing/types
 [documentation shield]: https://readthedocs.org/projects/php-types/badge/?version=latest&style=flat-square
-[documentation link]: https://php-types.readthedocs.io/en/latest/?badge=latest
+[documentation link]: https://phptyping.github.io/types-documentation/
 [stable-build-badge]: https://img.shields.io/endpoint?style=flat-square&url=https://gist.githubusercontent.com/vpassapera/027dcddb6a1dc1995a2a47e528aaf020/raw/build-stable.json
 [stable-build]: https://github.com/PhpTyping/types/actions/workflows/build-stable.yaml
 [integration-build-badge]: https://img.shields.io/endpoint?style=flat-square&url=https://gist.githubusercontent.com/vpassapera/73b13bfc6a004696c00552deb44b9e40/raw/build-integration.json
