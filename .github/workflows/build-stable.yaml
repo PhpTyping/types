@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
         with:
-          ref: master
+          ref: feature/workflow-failure-badge
           fetch-depth: 0
       - name: Install & Configure PHP
         uses: shivammathur/setup-php@2.11.0
@@ -49,28 +49,37 @@ jobs:
         env:
           XDEBUG_MODE: coverage
       - name: fix code coverage paths
-        if: contains(matrix.os, 'ubuntu-latest')
+        if: contains(matrix.os, 'ubuntu-latest') && ${{ !env.ACT }}
         working-directory: .
         run: |
           sed -i 's/\/home\/runner\/work\/types\/types\//\/github\/workspace\//g' build/phpunit/logs/clover.xml
           sed -i 's/\/home\/runner\/work\/types\/types\//\/github\/workspace\//g' build/phpunit/logs/junit.xml
       - name: Starting SonarCloud Scan
-        if: contains(matrix.os, 'ubuntu-latest')
+        if: contains(matrix.os, 'ubuntu-latest') && ${{ !env.ACT }}
         uses: sonarsource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  make_badge:
-    needs: build
-    runs-on: ubuntu-latest
-    if: contains(github.ref, 'master')
-    steps:
-      - name: Generate Build Badge, only on Cont. Build.
+      - name: Generate Failure Badge on Failure
+        if: ${{ failure() }}
         uses: Schneegans/dynamic-badges-action@v1.0.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: 027dcddb6a1dc1995a2a47e528aaf020
           filename: build-stable.json
-          label: Stable Build
+          label: Build
+          message: failing
+          color: red
+  make_badge:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate succesful badge
+        uses: Schneegans/dynamic-badges-action@v1.0.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 027dcddb6a1dc1995a2a47e528aaf020
+          filename: build-stable.json
+          label: Build
           message: passing
           color: green

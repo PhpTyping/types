@@ -42,7 +42,7 @@ jobs:
         if: steps.changes.outputs.changed == 1
         run: php bin/grumphp run --no-interaction
       - name: Commit changes if everything is ok.
-        if: ${{ success() }} && steps.changes.outputs.changed == 1
+        if: ${{ success() }} && steps.changes.outputs.changed == 1 && ${{ !env.ACT }}
         uses: EndBug/add-and-commit@v7
         with:
           author_name: PHPTyping
@@ -51,6 +51,16 @@ jobs:
           add: '.'
           push: true
           branch: master
+      - name: Generate Failure Badge on Failure
+        if: ${{ failure() }}
+        uses: Schneegans/dynamic-badges-action@v1.0.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: d18a6a553c2308b59df916c29ce64eb6
+          filename: patching.json
+          label: Patching
+          message: failing
+          color: red
   make_badge:
     runs-on: ubuntu-latest
     needs: test_and_patch
