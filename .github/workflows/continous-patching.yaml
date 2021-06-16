@@ -1,30 +1,24 @@
-name: "Integration branch continuous patching"
+name: "Continuous patching"
 on:
   schedule:
     - cron: '0 */12 * * *'
   workflow_dispatch: ~
 
 jobs:
-  grump:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        php-versions: ['8.0']
-        composer-versions: ['composer:v2']
-      fail-fast: false
-    name: Running on ${{ matrix.php-versions }} @ ${{ matrix.os }} with ${{ matrix.composer-versions }}
+  test_and_patch:
+    runs-on: ubuntu-latest
+    name: Auto-upgrades composer lock file and tests against latest versions.
     steps:
       - name: Checkout
         uses: actions/checkout@master
         with:
-          ref: develop
+          ref: master
       - name: Install & Configure PHP
         uses: shivammathur/setup-php@2.11.0
         with:
-          php-version: ${{ matrix.php-versions }}
-          tools: ${{ matrix.composer-versions }}
-          extensions: xdebug, mbstring, posix, gmp, bcmath
+          php-version: '8.0'
+          tools: 'composer:v2'
+          extensions: mbstring, posix, gmp, bcmath
       - name: Check Versions
         run: |
           php -v
@@ -40,11 +34,11 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: Update dependencies
-        run: composer update --no-progress --no-suggest --prefer-dist
+        run: composer update --no-progress --prefer-dist
       - name: Check if there are changes
         id: changes
         uses: UnicornGlobal/has-changes-action@v1.0.11
-      - name: Run Tests
+      - name: Run Tests with no coverage
         if: steps.changes.outputs.changed == 1
         run: php bin/grumphp run --no-interaction
       - name: Commit changes if everything is ok.
@@ -54,13 +48,15 @@ jobs:
           author_name: PHPTyping
           author_email: phptyping@noreply.com
           message: Updating dependencies in ${{ github.run_id }}
-          add: '. --no-verify'
+          add: '.'
           push: true
+          branch: master
   make_badge:
     runs-on: ubuntu-latest
-    if: contains(github.ref, "develop")
+    needs: test_and_patch
+    if: contains(github.ref, "master")
     steps:
-      - name: Generate Build Badge, only on Cont. Build.
+      - name: Generate Patch Badge
         uses: Schneegans/dynamic-badges-action@v1.0.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
