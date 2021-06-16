@@ -7,3 +7,6 @@ bin/
 .php-cs-fixer.cache
 .php_cs.cache
 .github/secrets.yaml
+var/*
+!var/.gitkeep
+
