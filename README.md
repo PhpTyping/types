@@ -1,6 +1,8 @@
 Types
 =====
 
+[![Join the chat at https://gitter.im/PhpTyping/Types](https://badges.gitter.im/PhpTyping/Types.svg)](https://gitter.im/PhpTyping/Types?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Job][github-stable-build-shield]][github stable build]
 [![Patch Job][github-patch-shield]][github patch build]
 [![Documentation][rtd-doc-shield]][github doc repo link]
