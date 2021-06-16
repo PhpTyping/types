@@ -1,6 +1,8 @@
 Types
 =====
 
+[![Join the chat at https://gitter.im/typing-types/types-support](https://badges.gitter.im/typing-types/types-support.svg)](https://gitter.im/typing-types/types-support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Job][github-stable-build-shield]][github stable build]
 [![Patch Job][github-patch-shield]][github patch build]
 [![Documentation][rtd-doc-shield]][github doc repo link]
