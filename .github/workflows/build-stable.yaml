@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
         with:
-          ref: feature/workflow-failure-badge
+          ref: master
           fetch-depth: 0
       - name: Install & Configure PHP
         uses: shivammathur/setup-php@2.11.0
