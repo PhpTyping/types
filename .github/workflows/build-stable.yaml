@@ -1,4 +1,4 @@
-name: "Stable branch continuous build"
+name: Build
 on:
   schedule:
     - cron: '0 */6 * * *'
@@ -49,13 +49,13 @@ jobs:
         env:
           XDEBUG_MODE: coverage
       - name: fix code coverage paths
-        if: contains(matrix.os, 'ubuntu-latest') && ${{ !env.ACT }}
+        if: ${{ !env.ACT && contains(matrix.os, 'ubuntu-latest') }}
         working-directory: .
         run: |
           sed -i 's/\/home\/runner\/work\/types\/types\//\/github\/workspace\//g' build/phpunit/logs/clover.xml
           sed -i 's/\/home\/runner\/work\/types\/types\//\/github\/workspace\//g' build/phpunit/logs/junit.xml
       - name: Starting SonarCloud Scan
-        if: contains(matrix.os, 'ubuntu-latest') && ${{ !env.ACT }}
+        if: ${{ !env.ACT && contains(matrix.os, 'ubuntu-latest') }}
         uses: sonarsource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

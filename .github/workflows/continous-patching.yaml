@@ -1,4 +1,4 @@
-name: "Continuous patching"
+name: Patch
 on:
   schedule:
     - cron: '0 */12 * * *'
@@ -42,7 +42,7 @@ jobs:
         if: steps.changes.outputs.changed == 1
         run: php bin/grumphp run --no-interaction
       - name: Commit changes if everything is ok.
-        if: ${{ success() }} && steps.changes.outputs.changed == 1 && ${{ !env.ACT }}
+        if: ${{ success() && steps.changes.outputs.changed == 1 && !env.ACT }}
         uses: EndBug/add-and-commit@v7
         with:
           author_name: PHPTyping
