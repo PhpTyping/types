@@ -54,7 +54,6 @@ jobs:
   make_badge:
     runs-on: ubuntu-latest
     needs: test_and_patch
-    if: contains(github.ref, "master")
     steps:
       - name: Generate Patch Badge
         uses: Schneegans/dynamic-badges-action@v1.0.0
