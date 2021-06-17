@@ -7,10 +7,10 @@
     <arg value="sp" />
     <rule ref="Symfony">
         <exclude name="Symfony.Functions.Arguments" />
-        <exclude name="Symfony.Commenting.License" />
         <exclude name="Symfony.Errors.ExceptionMessage.Invalid" />
-        <!--  is not working in php8-->
-        <exclude name="Symfony.Commenting.FunctionComment.Missing" />
+    </rule>
+    <rule ref="Symfony.Commenting.FunctionComment.Missing">
+        <exclude-pattern>tests/*</exclude-pattern>
     </rule>
     <rule ref="Generic.Files.LineLength">
         <properties>

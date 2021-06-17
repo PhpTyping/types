@@ -17,14 +17,9 @@ use MyCLabs\Enum\Enum as BaseEnum;
  *
  * This is purely a pass-through class for MyCLabs\Enum\Enum.
  * Check out their docs: https://github.com/myclabs/php-enum#readme
+ *
+ * @template T as object
  */
 class Enum extends BaseEnum
 {
-    /**
-     * @return string[]
-     */
-    public static function getSupported(): array
-    {
-        return static::toArray();
-    }
 }

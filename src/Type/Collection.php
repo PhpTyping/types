@@ -64,7 +64,7 @@ use function uasort;
  *
  * @template-implements Selectable<int|string, mixed>
  */
-class Collection implements Selectable, TypedCollectionInterface, PrimitiveLoaderInterface, BoxableInterface
+class Collection implements Selectable, TypedCollectionInterface, PrimitiveLoaderInterface, BoxableInterface //NOSONAR
 {
     use BoxableTrait;
     use IntCastableTrait;
@@ -497,7 +497,7 @@ class Collection implements Selectable, TypedCollectionInterface, PrimitiveLoade
      */
     public function unique(): static
     {
-        $closure = function ($key, $value) {
+        $closure = function ($k, $value) {
             // Uniqueness on a bool array would be pointless.
             return is_scalar($value) && !is_bool($value);
         };
@@ -715,9 +715,9 @@ class Collection implements Selectable, TypedCollectionInterface, PrimitiveLoade
      *
      * @return mixed
      */
-    private function getIntendedValue(mixed &$value): mixed
+    private function getIntendedValue(mixed &$value): mixed //NOSONAR
     {
-        $type = gettype($value);
+        $type = gettype($value); //NOSONAR
         if (null !== $this->type && ((!$value instanceof $this->type) && ($this->type !== $type))) {
             try {
                 if (class_exists($this->type)) {
@@ -758,7 +758,7 @@ class Collection implements Selectable, TypedCollectionInterface, PrimitiveLoade
      *
      * @return bool
      */
-    private function isValidForType(mixed $value, Primitive $targetType): bool
+    private function isValidForType(mixed $value, Primitive $targetType): bool //NOSONAR
     {
         if ((string) Primitive::INT() === (string) $targetType ||
             (string) Primitive::FLOAT() === (string) $targetType) {

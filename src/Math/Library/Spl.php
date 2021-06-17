@@ -472,6 +472,11 @@ class Spl implements MathLibraryInterface
         return 0;
     }
 
+    /**
+     * @param string $operand
+     *
+     * @return string
+     */
     private function getGammaSmSmp(string $operand): string
     {
         $currOperand = $operand;

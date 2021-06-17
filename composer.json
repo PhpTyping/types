@@ -42,7 +42,7 @@
         "ext-gmp": "*",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
         "escapestudios/symfony2-coding-standard": "^3.12",
-        "friendsofphp/php-cs-fixer": "^2.19",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "phpstan/phpstan": "~0.12",
         "sebastian/phpcpd": "^6.0",
         "mockery/mockery": "^1.4",

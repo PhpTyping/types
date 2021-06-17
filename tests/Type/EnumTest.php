@@ -25,6 +25,5 @@ class EnumTest extends TestCase
     {
         $enum = new Primitive((string) Primitive::BOOL());
         $this->assertInstanceOf(BaseEnum::class, $enum);
-        $this->assertEquals($enum::toArray(), $enum::getSupported());
     }
 }
