@@ -35,6 +35,9 @@ final class DefaultManager implements ManagerInterface
      */
     private array $collection = [];
 
+    /**
+     * Private constructor.
+     */
     private function __construct()
     {
         // Singleton class needs no constructor...

@@ -302,6 +302,11 @@ abstract class AbstractNumberObject implements NumberObjectInterface, BoxableInt
         );
     }
 
+    /**
+     * @param mixed $operand
+     *
+     * @return NumberObjectInterface
+     */
     private function getTypeForOperand(mixed $operand): NumberObjectInterface
     {
         if ($operand instanceof IntObject) {

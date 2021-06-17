@@ -1,9 +1,10 @@
 Types
 =====
 
+[![Gitter][gitter-shield]][gitter link]
+[![Documentation][rtd-doc-shield]][github doc repo link]
 [![Build Job][github-stable-build-shield]][github stable build]
 [![Patch Job][github-patch-shield]][github patch build]
-[![Documentation][rtd-doc-shield]][github doc repo link]
 [![License][github-license-shield]][packagist page]
 [![Issues][github-issues-shield]][github issues page]
 [![Downloads][pkgist-dls-shield]][packagist page]
@@ -96,10 +97,12 @@ This library is released under the MIT license. See the complete license in the 
 [github stable build]: https://github.com/PhpTyping/types/actions/workflows/build-stable.yaml
 [github patch build]: https://github.com/PhpTyping/types/actions/workflows/continous-patching.yaml
 [github doc repo link]: https://github.com/PhpTyping/types-documentation
+[gitter link]: https://gitter.im/PhpTyping/Types?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 [github-issues-shield]: https://img.shields.io/github/issues/PhpTyping/Types.svg?style=flat-square
 [github-license-shield]: https://img.shields.io/github/license/PhpTyping/types?style=flat-square
 [github-stable-build-shield]: https://img.shields.io/endpoint?style=flat-square&url=https://gist.githubusercontent.com/vpassapera/027dcddb6a1dc1995a2a47e528aaf020/raw/build-stable.json
 [github-patch-shield]: https://img.shields.io/endpoint?style=flat-square&url=https://gist.githubusercontent.com/vpassapera/d18a6a553c2308b59df916c29ce64eb6/raw/patching.json
+[gitter-shield]: https://img.shields.io/gitter/room/typing-types/types-support?style=flat-square
 [pkgist-dls-shield]: https://img.shields.io/packagist/dt/typing/types.svg?style=flat-square
 [pkgist-version-shield]: https://img.shields.io/packagist/v/typing/types.svg?style=flat-square
 [rtd-doc-shield]: https://readthedocs.org/projects/php-types/badge/?version=latest&style=flat-square

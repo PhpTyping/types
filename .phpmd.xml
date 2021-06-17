@@ -1,12 +1,4 @@
 <?xml version="1.0"?>
-<!--
-  ~  This file is part of typing/types.
-  ~
-  ~  (c) Victor Passapera <vpassapera@gmail.com>
-  ~
-  ~  For the full copyright and license information, please view the LICENSE
-  ~  file that was distributed with this source code.
--->
 <ruleset name="Types Standard"
          xmlns="http://pmd.sf.net/ruleset/1.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
