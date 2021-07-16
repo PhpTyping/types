@@ -63,13 +63,14 @@ class StringObject extends AbstractStringObject implements
      *
      * @param string $delimiter
      * @param int    $limit     default PHP_INT_MAX
-     * @param bool   $trim      default false, greedely trim the string before exploding
+     * @param bool   $trim      default true, greedely trim the string and delimiter before exploding
      *
      * @return Collection<int, string>
      */
     public function explode(string $delimiter, int $limit = PHP_INT_MAX, bool $trim = true): Collection
     {
         $str = ($trim) ? $this->regexReplace('[[:space:]]', '')->str : $this->str;
+        /** @phpstan-var non-empty-string $delimiter */
         $delimiter = ($trim) ? static::create($delimiter)->regexReplace('[[:space:]]', '')->str : $delimiter;
 
         return new Collection(explode($delimiter, $str, $limit), static::class);
@@ -90,7 +91,7 @@ class StringObject extends AbstractStringObject implements
      *
      * @return static
      */
-    public function slugify($replacement = '-'): static
+    public function slugify(string $replacement = '-'): static
     {
         return new static(
             (new Slugify())->slugify(
@@ -300,7 +301,7 @@ class StringObject extends AbstractStringObject implements
      *
      * @return static
      */
-    public function subStrUntil(string $subStr, $includingSubStr = false, $caseSensitive = false): static
+    public function subStrUntil(string $subStr, bool $includingSubStr = false, bool $caseSensitive = false): static
     {
         $fromSubStr = $this->str[0];
 
@@ -316,7 +317,7 @@ class StringObject extends AbstractStringObject implements
      *
      * @return static
      */
-    public function subStrAfter(string $subStr, $includingSubStr = false, $caseSensitive = false): static
+    public function subStrAfter(string $subStr, bool $includingSubStr = false, bool $caseSensitive = false): static
     {
         return $this->subStrBetween($subStr, null, !$includingSubStr, false, $caseSensitive);
     }
