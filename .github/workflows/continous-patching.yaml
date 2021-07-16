@@ -13,6 +13,7 @@ jobs:
         uses: actions/checkout@master
         with:
           ref: master
+          token: ${{ secrets.PATCHING_TOKEN }}
       - name: Install & Configure PHP
         uses: shivammathur/setup-php@2.11.0
         with:

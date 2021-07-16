@@ -47,7 +47,7 @@ grumphp:
                 - tests
                 - RoboFile.php
                 - .php-cs-fixer.dist.php
-            memory_limit: '512'
+            memory_limit: '512M'
             triggered_by: [php]
         phpunit:
             config_file: phpunit.xml.dist
