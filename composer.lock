@@ -2539,12 +2539,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pdepend/pdepend.git",
-                "reference": "9175f820e0b34529509a2d73d821c937ae642540"
+                "reference": "6087acffafdc6b91ceace55ebb0e336b79922db4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/9175f820e0b34529509a2d73d821c937ae642540",
-                "reference": "9175f820e0b34529509a2d73d821c937ae642540",
+                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/6087acffafdc6b91ceace55ebb0e336b79922db4",
+                "reference": "6087acffafdc6b91ceace55ebb0e336b79922db4",
                 "shasum": ""
             },
             "require": {
@@ -2589,7 +2589,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-27T10:43:02+00:00"
+            "time": "2021-07-18T20:24:02+00:00"
         },
         {
             "name": "phar-io/manifest",
